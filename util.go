@@ -13,7 +13,7 @@ func Ruis_bytes2short(bts []byte) int {
 	var ret = 0
 	if len(bts) >= 2 {
 		//fmt.Println("ruis_bytes2short:",(int(bts[0])<<8)&0xff),"，",(int(bts[0])&0xff))
-		ret = (int(int(bts[0])<<8) & 0xff) | (int(bts[1]) & 0xff)
+		ret = (int(int(bts[0])<<8) & 0xffff) | (int(bts[1]) & 0xff)
 	}
 	return ret
 }
