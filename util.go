@@ -39,21 +39,21 @@ func Int2Bytes(v int64, len int) []byte {
 		break
 	case 16:
 		var tmp = int16(v)
-		err := binary.Read(buf, binary.BigEndian, &tmp)
+		err := binary.Write(buf, binary.BigEndian, &tmp)
 		if err != nil {
 			panic("binary.Write err")
 		}
 		break
 	case 32:
 		var tmp = int32(v)
-		err := binary.Read(buf, binary.BigEndian, &tmp)
+		err := binary.Write(buf, binary.BigEndian, &tmp)
 		if err != nil {
 			panic("binary.Write err")
 		}
 		break
 	case 64:
 		var tmp = int64(v)
-		err := binary.Read(buf, binary.BigEndian, &tmp)
+		err := binary.Write(buf, binary.BigEndian, &tmp)
 		if err != nil {
 			panic("binary.Write err")
 		}
@@ -108,21 +108,21 @@ func UInt2Bytes(v int64, len int) []byte {
 		break
 	case 16:
 		var tmp = uint16(v)
-		err := binary.Read(buf, binary.BigEndian, &tmp)
+		err := binary.Write(buf, binary.BigEndian, &tmp)
 		if err != nil {
-			panic("binary.Write err")
+			panic("binary.Write err:" + err.Error())
 		}
 		break
 	case 32:
 		var tmp = uint32(v)
-		err := binary.Read(buf, binary.BigEndian, &tmp)
+		err := binary.Write(buf, binary.BigEndian, &tmp)
 		if err != nil {
-			panic("binary.Write err")
+			panic("binary.Write err:" + err.Error())
 		}
 		break
 	case 64:
 		var tmp = uint64(v)
-		err := binary.Read(buf, binary.BigEndian, &tmp)
+		err := binary.Write(buf, binary.BigEndian, &tmp)
 		if err != nil {
 			panic("binary.Write err")
 		}
