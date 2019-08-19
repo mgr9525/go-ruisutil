@@ -22,7 +22,7 @@ func NewJsonConfig(path string) *JsonConfig {
 
 func (e *JsonConfig) init() {
 	defer Recovers("JsonConfig.init")
-	if e.path != "" && ruisio.PathExists(e.path) {
+	if e.path != "" && ruisIo.PathExists(e.path) {
 		conts, err := ioutil.ReadFile(e.path)
 		if err == nil {
 			fmt.Println("readTo:" + e.path + "! conts:" + string(conts))
