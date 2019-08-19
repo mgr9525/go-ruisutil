@@ -3,8 +3,8 @@ package ruisUtil
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/mgr9525/go-ruisutil/ruisio"
 	"io/ioutil"
-	"linskruis/go-ruisutil/ruisio"
 )
 
 type JsonConfig struct {
