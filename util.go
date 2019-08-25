@@ -6,14 +6,14 @@ import (
 	"fmt"
 )
 
-type ErrHandle func(o interface{})
+type ErrHandle func(errs string)
 
 func Recovers(name string, handle ErrHandle) {
 	if err := recover(); err != nil {
 		fmt.Print("ruisRecover(" + name + "):")
 		fmt.Println(err) // 这里的err其实就是panic传入的内容，55
 		if handle != nil {
-			handle(err)
+			handle(fmt.Sprint(err))
 		}
 	}
 }
