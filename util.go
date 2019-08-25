@@ -3,6 +3,7 @@ package ruisUtil
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 	"fmt"
 )
 
@@ -13,7 +14,16 @@ func Recovers(name string, handle ErrHandle) {
 		fmt.Print("ruisRecover(" + name + "):")
 		fmt.Println(err) // 这里的err其实就是panic传入的内容，55
 		if handle != nil {
-			handle(err)
+			var rterr error
+			switch err.(type) {
+			case error:
+				rterr = err.(error)
+				break
+			default:
+				rterr = errors.New("not found what error!")
+				break
+			}
+			handle(rterr)
 		}
 	}
 }
