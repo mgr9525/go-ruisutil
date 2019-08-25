@@ -21,7 +21,7 @@ func NewJsonConfig(path string) *JsonConfig {
 }
 
 func (e *JsonConfig) init() {
-	defer Recovers("JsonConfig.init")
+	defer Recovers("JsonConfig.init", nil)
 	if e.path != "" && ruisIo.PathExists(e.path) {
 		conts, err := ioutil.ReadFile(e.path)
 		if err == nil {
@@ -37,7 +37,7 @@ func (e *JsonConfig) init() {
 }
 
 func (e *JsonConfig) Reinit(bts []byte) {
-	defer Recovers("JsonConfig.reinit")
+	defer Recovers("JsonConfig.reinit", nil)
 	json.Unmarshal(bts, &e.root)
 }
 
@@ -54,7 +54,7 @@ func (e *JsonConfig) Sets(key string, value string) {
 }
 
 func (e *JsonConfig) Save() {
-	defer Recovers("JsonConfig.save")
+	defer Recovers("JsonConfig.save", nil)
 
 	if e.path != "" {
 		js, err := json.Marshal(e.root)
