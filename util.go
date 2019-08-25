@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-type ErrHandle func(ifc interface{})
+type ErrHandle func(ifc error)
 
 func Recovers(name string, handle ErrHandle) {
 	if err := recover(); err != nil {
