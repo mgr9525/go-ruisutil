@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
+	"time"
 )
 
 func NewRequestJson(method, urls string, body interface{}) (*http.Request, error) {
@@ -19,4 +20,15 @@ func NewRequestJson(method, urls string, body interface{}) (*http.Request, error
 	req.Header.Set("Content-Type", "application/json;charset=utf-8")
 
 	return req, nil
+}
+func DoHttpJson(method, urls string, body interface{}, timeout ...int) (*http.Response, error) {
+	req, err := NewRequestJson(method, urls, body)
+	if err != nil {
+		return nil, err
+	}
+	cli := http.DefaultClient
+	if len(timeout) > 0 {
+		cli.Timeout = time.Duration(timeout[0])
+	}
+	return cli.Do(req)
 }
