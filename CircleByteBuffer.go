@@ -43,6 +43,10 @@ func (e *CircleByteBuffer) GetLen() int {
 func (e *CircleByteBuffer) GetFree() int {
 	return e.size - e.GetLen()
 }
+func (e *CircleByteBuffer) Clear() {
+	e.start = 0
+	e.end = 0
+}
 func (e *CircleByteBuffer) PutByte(b byte) error {
 	if e.isClose {
 		return io.EOF
