@@ -29,6 +29,11 @@ func NewMapo(body interface{}) *Map {
 	case []byte:
 		json.Unmarshal(body.([]byte), e)
 		break
+	case map[string]interface{}:
+		for k, v := range body.(map[string]interface{}) {
+			e.Set(k, v)
+		}
+		break
 	default:
 		bts, err := json.Marshal(body)
 		if err == nil {
