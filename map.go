@@ -17,6 +17,17 @@ func NewMaps(body string) *Map {
 	json.Unmarshal([]byte(body), e)
 	return e
 }
+func NewMapo(body interface{}) *Map {
+	e := &Map{}
+	if body == nil {
+		return e
+	}
+	bts, err := json.Marshal(body)
+	if err == nil {
+		json.Unmarshal(bts, e)
+	}
+	return e
+}
 
 func (e *Map) Get(key string) interface{} {
 	return (*e)[key]
