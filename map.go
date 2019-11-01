@@ -22,9 +22,19 @@ func NewMapo(body interface{}) *Map {
 	if body == nil {
 		return e
 	}
-	bts, err := json.Marshal(body)
-	if err == nil {
-		json.Unmarshal(bts, e)
+	switch body.(type) {
+	case string:
+		json.Unmarshal([]byte(body.(string)), e)
+		break
+	case []byte:
+		json.Unmarshal(body.([]byte), e)
+		break
+	default:
+		bts, err := json.Marshal(body)
+		if err == nil {
+			json.Unmarshal(bts, e)
+		}
+		break
 	}
 	return e
 }
