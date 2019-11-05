@@ -34,6 +34,11 @@ func NewMapo(body interface{}) *Map {
 			e.Set(k, v)
 		}
 		break
+	case *map[string]interface{}:
+		for k, v := range *(body.(*map[string]interface{})) {
+			e.Set(k, v)
+		}
+		break
 	default:
 		bts, err := json.Marshal(body)
 		if err == nil {
@@ -53,6 +58,11 @@ func (e *Map) Set(key string, val interface{}) {
 func (e *Map) Map() map[string]interface{} {
 	defer Recovers("convert pointer", nil)
 	return *e
+}
+func (e *Map) PMap() *map[string]interface{} {
+	defer Recovers("convert pointer", nil)
+	mp := e.Map()
+	return &mp
 }
 func (e *Map) ToString() string {
 	bts, _ := json.Marshal(e)
