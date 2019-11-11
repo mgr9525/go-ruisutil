@@ -3,6 +3,7 @@ package ruisUtil
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/json"
 	"fmt"
 )
 
@@ -169,4 +170,16 @@ func Bytes2UInt(v []byte, len int) uint64 {
 	}
 
 	return 0
+}
+
+func StructInterturn(src, dist interface{}) error {
+	bts, err := json.Marshal(src)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(bts, dist)
+	if err != nil {
+		return err
+	}
+	return nil
 }
