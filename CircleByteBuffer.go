@@ -2,7 +2,6 @@ package ruisUtil
 
 import (
 	"errors"
-	"fmt"
 	"io"
 	"time"
 )
@@ -37,7 +36,7 @@ func (e *CircleByteBuffer) GetLen() int {
 	} else if e.start < e.end {
 		return e.end - e.start
 	} else {
-		return e.start - e.end
+		return e.size - (e.start - e.end)
 	}
 }
 func (e *CircleByteBuffer) GetFree() int {
@@ -53,17 +52,16 @@ func (e *CircleByteBuffer) PutByte(b byte) error {
 	}
 	e.datas[e.end] = b
 	var pos = e.end + 1
+	if pos == e.size {
+		pos = 0
+	}
 	for pos == e.start {
 		if e.isClose {
 			return io.EOF
 		}
 		time.Sleep(time.Millisecond)
 	}
-	if pos == e.size {
-		e.end = 0
-	} else {
-		e.end = pos
-	}
+	e.end = pos
 	return nil
 }
 
@@ -71,17 +69,18 @@ func (e *CircleByteBuffer) GetByte() (byte, error) {
 	if e.isClose {
 		return 0, io.EOF
 	}
-	if e.isEnd && e.GetLen() <= 0 {
-		return 0, io.EOF
-	}
-	if e.GetLen() <= 0 {
-		return 0, errors.New("no datas")
+	for e.GetLen() <= 0 {
+		if e.isClose || e.isEnd {
+			return 0, io.EOF
+		}
+		time.Sleep(time.Millisecond)
 	}
 	var ret = e.datas[e.start]
-	e.start++
-	if e.start == e.size {
-		e.start = 0
+	pos := e.start + 1
+	if pos == e.size {
+		pos = 0
 	}
+	e.start = pos
 	return ret, nil
 }
 func (e *CircleByteBuffer) Geti(i int) byte {
@@ -125,10 +124,7 @@ func (e *CircleByteBuffer) Read(bts []byte) (int, error) {
 	for i := 0; i < len(bts); i++ {
 		b, err := e.GetByte()
 		if err != nil {
-			if err == io.EOF {
-				return ret, err
-			}
-			return ret, nil
+			return ret, err
 		}
 		bts[i] = b
 		ret++
@@ -150,7 +146,6 @@ func (e *CircleByteBuffer) Write(bts []byte) (int, error) {
 	for i := 0; i < len(bts); i++ {
 		err := e.PutByte(bts[i])
 		if err != nil {
-			fmt.Println("Write bts err:", err)
 			return ret, err
 		}
 		ret++
