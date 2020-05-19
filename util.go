@@ -5,16 +5,25 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
+	"runtime"
 )
 
 type ErrHandle func(errs string)
+type ErrHandlek func(errs, stack string)
 
 func Recovers(name string, handle ErrHandle) {
 	if err := recover(); err != nil {
-		fmt.Print("ruisRecover(" + name + "):")
-		fmt.Println(err) // 这里的err其实就是panic传入的内容，55
 		if handle != nil {
 			handle(fmt.Sprint(err))
+		}
+	}
+}
+func Recoverks(name string, handle ErrHandlek) {
+	if err := recover(); err != nil {
+		if handle != nil {
+			var buf [4096]byte
+			n := runtime.Stack(buf[:], false)
+			handle(fmt.Sprint(err), string(buf[:n]))
 		}
 	}
 }
