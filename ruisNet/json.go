@@ -21,14 +21,14 @@ func NewRequestJson(method, urls string, body interface{}) (*http.Request, error
 
 	return req, nil
 }
-func DoHttpJson(method, urls string, body interface{}, timeout ...int) (*http.Response, error) {
+func DoHttpJson(method, urls string, body interface{}, timeout ...time.Duration) (*http.Response, error) {
 	req, err := NewRequestJson(method, urls, body)
 	if err != nil {
 		return nil, err
 	}
 	cli := http.DefaultClient
 	if len(timeout) > 0 {
-		cli.Timeout = time.Duration(timeout[0])
+		cli.Timeout = timeout[0]
 	}
 	return cli.Do(req)
 }
