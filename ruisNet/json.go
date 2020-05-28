@@ -26,7 +26,7 @@ func DoHttpJson(method, urls string, body interface{}, timeout ...time.Duration)
 	if err != nil {
 		return nil, err
 	}
-	cli := http.DefaultClient
+	cli := &http.Client{}
 	if len(timeout) > 0 {
 		cli.Timeout = timeout[0]
 	}
