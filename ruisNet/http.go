@@ -3,6 +3,8 @@ package ruisNet
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
+	"io/ioutil"
 	"net/http"
 	"time"
 )
@@ -31,4 +33,34 @@ func DoHttpJson(method, urls string, body interface{}, timeout ...time.Duration)
 		cli.Timeout = timeout[0]
 	}
 	return cli.Do(req)
+}
+func DoHttpJsonObj(method, urls string, body, rets interface{}, timeout ...time.Duration) error {
+	if rets == nil {
+		return errors.New("rets is nil")
+	}
+	req, err := NewRequestJson(method, urls, body)
+	if err != nil {
+		return err
+	}
+	cli := &http.Client{}
+	if len(timeout) > 0 {
+		cli.Timeout = timeout[0]
+	}
+	res, err := cli.Do(req)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+	bts, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+	if res.StatusCode != 200 {
+		return errors.New(string(bts))
+	}
+	err = json.Unmarshal(bts, rets)
+	if err != nil {
+		return err
+	}
+	return nil
 }
