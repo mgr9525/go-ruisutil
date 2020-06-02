@@ -34,6 +34,26 @@ func DoHttpJson(method, urls string, body interface{}, timeout ...time.Duration)
 	}
 	return cli.Do(req)
 }
+func DoHttpJsons(method, urls string, body interface{}, timeout ...time.Duration) (int, []byte, error) {
+	req, err := NewRequestJson(method, urls, body)
+	if err != nil {
+		return 0, nil, err
+	}
+	cli := &http.Client{}
+	if len(timeout) > 0 {
+		cli.Timeout = timeout[0]
+	}
+	res, err := cli.Do(req)
+	if err != nil {
+		return 0, nil, err
+	}
+	defer res.Body.Close()
+	bts, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return res.StatusCode, nil, err
+	}
+	return res.StatusCode, bts, err
+}
 func DoHttpJsonObj(method, urls string, body, rets interface{}, timeout ...time.Duration) error {
 	if rets == nil {
 		return errors.New("rets is nil")
