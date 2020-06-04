@@ -64,9 +64,16 @@ func (e *Map) PMap() *map[string]interface{} {
 	mp := e.Map()
 	return &mp
 }
+func (e *Map) ToBytes() []byte {
+	bts, err := json.Marshal(e)
+	if err != nil {
+		return nil
+	}
+	return bts
+}
 func (e *Map) ToString() string {
-	bts, _ := json.Marshal(e)
-	if bts == nil || len(bts) <= 0 {
+	bts, err := json.Marshal(e)
+	if err != nil {
 		return ""
 	}
 	return string(bts)
