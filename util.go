@@ -80,6 +80,7 @@ func Bytes2Int(v []byte, len int) (ret int64, rterr error) {
 	case 64:
 		rterr = binary.Read(buf, binary.BigEndian, &ret)
 	}
+	return
 }
 func UInt2Bytes(v int64, len int) []byte {
 	buf := &bytes.Buffer{}
