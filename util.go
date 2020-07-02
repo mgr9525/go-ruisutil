@@ -42,74 +42,44 @@ func Short2Bytes(v int) []byte {
 	return bts
 }
 
-func Int2Bytes(v int64, len int) []byte {
+func Int2Bytes(v int64, len int) ([]byte, error) {
+	var tmp interface{}
 	buf := &bytes.Buffer{}
 	switch len {
 	case 8:
-		var tmp = int8(v)
-		err := binary.Write(buf, binary.BigEndian, &tmp)
-		if err != nil {
-			panic("binary.Write err")
-		}
-		break
+		t := int8(v)
+		tmp = &t
 	case 16:
-		var tmp = int16(v)
-		err := binary.Write(buf, binary.BigEndian, &tmp)
-		if err != nil {
-			panic("binary.Write err")
-		}
-		break
+		t := int16(v)
+		tmp = &t
 	case 32:
-		var tmp = int32(v)
-		err := binary.Write(buf, binary.BigEndian, &tmp)
-		if err != nil {
-			panic("binary.Write err")
-		}
-		break
+		t := int32(v)
+		tmp = &t
 	case 64:
-		var tmp = int64(v)
-		err := binary.Write(buf, binary.BigEndian, &tmp)
-		if err != nil {
-			panic("binary.Write err")
-		}
-		break
+		tmp = &v
 	}
-	return buf.Bytes()
+	err := binary.Write(buf, binary.BigEndian, tmp)
+	return buf.Bytes(), err
 }
-func Bytes2Int(v []byte, len int) int64 {
+func Bytes2Int(v []byte, len int) (ret int64, rterr error) {
+	ret = int64(0)
 	buf := bytes.NewBuffer(v)
 	switch len {
 	case 8:
 		var tmp int8
-		err := binary.Read(buf, binary.BigEndian, &tmp)
-		if err != nil {
-			panic("binary.Read err")
-		}
-		return int64(tmp)
+		rterr = binary.Read(buf, binary.BigEndian, &tmp)
+		ret = int64(tmp)
 	case 16:
 		var tmp int16
-		err := binary.Read(buf, binary.BigEndian, &tmp)
-		if err != nil {
-			panic("binary.Read err")
-		}
-		return int64(tmp)
+		rterr = binary.Read(buf, binary.BigEndian, &tmp)
+		ret = int64(tmp)
 	case 32:
 		var tmp int32
-		err := binary.Read(buf, binary.BigEndian, &tmp)
-		if err != nil {
-			panic("binary.Read err")
-		}
-		return int64(tmp)
+		rterr = binary.Read(buf, binary.BigEndian, &tmp)
+		ret = int64(tmp)
 	case 64:
-		var tmp int64
-		err := binary.Read(buf, binary.BigEndian, &tmp)
-		if err != nil {
-			panic("binary.Read err")
-		}
-		return int64(tmp)
+		rterr = binary.Read(buf, binary.BigEndian, &ret)
 	}
-
-	return 0
 }
 func UInt2Bytes(v int64, len int) []byte {
 	buf := &bytes.Buffer{}
