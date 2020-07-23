@@ -50,6 +50,9 @@ func AESEncrypt(src, key, iv []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	if iv == nil || len(iv) <= 0 {
+		iv = make([]byte, block.BlockSize())
+	}
 	src = padding(src, block.BlockSize())
 	blockmode := cipher.NewCBCEncrypter(block, iv)
 	dist := make([]byte, len(src))
@@ -61,6 +64,9 @@ func AESDecrypt(src, key, iv []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err
+	}
+	if iv == nil || len(iv) <= 0 {
+		iv = make([]byte, block.BlockSize())
 	}
 	blockmode := cipher.NewCBCDecrypter(block, iv)
 	dist := make([]byte, len(src))
