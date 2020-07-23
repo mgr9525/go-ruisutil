@@ -86,7 +86,7 @@ func DoHttpJsonObj(method, urls string, body, rets interface{}, timeout ...time.
 }
 
 func NewRequest(method, urls string, body interface{}) (*http.Request, error) {
-	var buf *bytes.Buffer
+	var buf = bytes.NewBuffer([]byte{})
 	if body != nil {
 		switch body.(type) {
 		case []byte:
