@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -15,11 +16,11 @@ func NewRequestJson(method, urls string, body interface{}) (*http.Request, error
 		return nil, err
 	}
 
-	req, err := http.NewRequest(method, urls, bytes.NewBuffer(bts))
+	req, err := http.NewRequest(strings.ToUpper(method), urls, bytes.NewBuffer(bts))
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Content-Type", "application/json;charset=utf-8")
+	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 
 	return req, nil
 }
@@ -101,7 +102,15 @@ func NewRequest(method, urls string, body interface{}) (*http.Request, error) {
 			buf = bytes.NewBuffer(bts)
 		}
 	}
-	return http.NewRequest(method, urls, buf)
+
+	req, err := http.NewRequest(strings.ToUpper(method), urls, buf)
+	if err != nil {
+		return nil, err
+	}
+	if strings.ToUpper(method) == "POST" {
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded; charset=utf-8")
+	}
+	return req, nil
 }
 func DoHttp(method, urls string, body interface{}, timeout ...time.Duration) (*http.Response, error) {
 	req, err := NewRequest(method, urls, body)
