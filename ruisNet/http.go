@@ -115,7 +115,7 @@ func DoHttp(method, urls string, body interface{}, timeout ...time.Duration) (*h
 	return cli.Do(req)
 }
 func DoHttps(method, urls string, body interface{}, timeout ...time.Duration) (int, []byte, error) {
-	req, err := NewRequestJson(method, urls, body)
+	req, err := NewRequest(method, urls, body)
 	if err != nil {
 		return 0, nil, err
 	}
@@ -138,7 +138,7 @@ func DoHttpObj(method, urls string, body, rets interface{}, timeout ...time.Dura
 	if rets == nil {
 		return errors.New("rets is nil")
 	}
-	req, err := NewRequestJson(method, urls, body)
+	req, err := NewRequest(method, urls, body)
 	if err != nil {
 		return err
 	}
