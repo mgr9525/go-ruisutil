@@ -20,7 +20,7 @@ func PathExists(path string) bool {
 func CheckContext(ctx context.Context) error {
 	select {
 	case <-ctx.Done():
-		return errors.New("end")
+		return errors.New("context end")
 	default:
 		return nil
 	}
