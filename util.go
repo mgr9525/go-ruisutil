@@ -4,28 +4,14 @@ import (
 	"bytes"
 	"encoding/binary"
 	"encoding/json"
-	"fmt"
 	"math/rand"
-	"runtime"
 	"time"
 )
 
-type ErrHandle func(errs string)
-type ErrHandlek func(errs, stack string)
-
-func Recovers(name string, handle ErrHandle) {
+func Recovers(name string, handle func(errs interface{})) {
 	if err := recover(); err != nil {
 		if handle != nil {
-			handle(fmt.Sprint(err))
-		}
-	}
-}
-func Recoverks(name string, handle ErrHandlek) {
-	if err := recover(); err != nil {
-		if handle != nil {
-			var buf [4096]byte
-			n := runtime.Stack(buf[:], false)
-			handle(fmt.Sprint(err), string(buf[:n]))
+			handle(err)
 		}
 	}
 }
