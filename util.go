@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func Recovers(name string, handle func(errs interface{})) {
+func Recovers(handle func(errs interface{})) {
 	if err := recover(); err != nil {
 		if handle != nil {
 			handle(err)
