@@ -56,11 +56,11 @@ func (e *Map) Set(key string, val interface{}) {
 	(*e)[key] = val
 }
 func (e *Map) Map() map[string]interface{} {
-	defer Recovers("convert pointer", nil)
+	defer Recovers(nil)
 	return *e
 }
 func (e *Map) PMap() *map[string]interface{} {
-	defer Recovers("convert pointer", nil)
+	defer Recovers(nil)
 	mp := e.Map()
 	return &mp
 }
