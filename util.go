@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/md5"
 	randc "crypto/rand"
+	"encoding/base64"
 	"encoding/binary"
 	"encoding/hex"
 	"encoding/json"
@@ -177,6 +178,15 @@ func RandomString(l int) string {
 
 // NewXid 生成唯一ID
 func NewXid() string {
+	return hex.EncodeToString(newXid())
+}
+
+// NewXid 生成唯一ID-base64
+func NewXid64() string {
+	return base64.StdEncoding.EncodeToString(newXid())
+}
+
+func newXid() []byte {
 	var b [12]byte
 	// Timestamp, 4 bytes, big endian
 	binary.BigEndian.PutUint32(b[:], uint32(time.Now().Unix()))
@@ -194,7 +204,7 @@ func NewXid() string {
 	b[9] = byte(i >> 16)
 	b[10] = byte(i >> 8)
 	b[11] = byte(i)
-	return hex.EncodeToString(b[:])
+	return b[:]
 }
 
 // objectIdCounter is atomically incremented when generating a new Xid
