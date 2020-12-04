@@ -179,7 +179,8 @@ func RandomString(l int) string {
 func NewXid() string {
 	var b [12]byte
 	// Timestamp, 4 bytes, big endian
-	binary.BigEndian.PutUint32(b[:], uint32(time.Now().UnixNano()/1e6))
+	binary.BigEndian.PutUint32(b[:], uint32(time.Now().Unix()))
+	// binary.BigEndian.PutUint32(b[:], uint32(time.Now().UnixNano()/1e6))
 	// Machine, first 3 bytes of md5(hostname)
 	b[4] = machineId[0]
 	b[5] = machineId[1]
