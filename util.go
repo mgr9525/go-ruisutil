@@ -183,7 +183,7 @@ func NewXid() string {
 
 // NewXid64 生成唯一ID-base64
 func NewXid64() string {
-	return base64.StdEncoding.EncodeToString(newXid())
+	return base64.RawURLEncoding.EncodeToString(newXid())
 }
 
 func newXid() []byte {
