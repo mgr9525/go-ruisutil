@@ -48,8 +48,7 @@ func Bytes2Struct(pt interface{}, bts []byte) error {
 	data := vf.Elem().Interface()
 	ln := unsafe.Sizeof(data)
 	dataptr := uintptr(unsafe.Pointer(&data))
-	sct := uintptr(unsafe.Pointer(&bts[0]))
-	C.memcpy(unsafe.Pointer(dataptr), unsafe.Pointer(sct), C.ulong(ln))
+	C.memcpy(unsafe.Pointer(dataptr), unsafe.Pointer(&bts[0]), C.ulong(ln))
 	vf.Elem().Set(reflect.ValueOf(data))
 	return nil
 }
