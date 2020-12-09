@@ -55,7 +55,7 @@ func Bytes2Struct(pt interface{}, bts []byte) error {
 	vf.Elem().Set(reflect.ValueOf(data))
 	return nil
 }*/
-func Struct2Bytes(pt unsafe.Pointer, ln uintptr) ([]byte, error) {
+func Struct2Bytes(pt unsafe.Pointer, ln uint) ([]byte, error) {
 	mock := &SliceMock{
 		addr: pt,
 		cap:  int(ln),
@@ -66,7 +66,7 @@ func Struct2Bytes(pt unsafe.Pointer, ln uintptr) ([]byte, error) {
 	copy(rtbts, bts)
 	return rtbts, nil
 }
-func Bytes2Struct(pt unsafe.Pointer, bts []byte, ln uintptr) error {
+func Bytes2Struct(pt unsafe.Pointer, bts []byte, ln uint) error {
 	if pt == nil {
 		return errors.New("param is nil")
 	}
