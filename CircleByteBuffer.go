@@ -1,6 +1,7 @@
 package ruisUtil
 
 import (
+	"context"
 	"errors"
 	"io"
 	"time"
@@ -12,21 +13,21 @@ type CircleByteBuffer struct {
 	io.Closer
 	datas []byte
 
-	start   int
-	end     int
-	size    int
-	isClose bool
-	isEnd   bool
+	start int
+	end   int
+	size  int
+
+	ctx  context.Context
+	cncl context.CancelFunc
 }
 
-func NewCircleByteBuffer(len int) *CircleByteBuffer {
+func NewCircleByteBuffer(ctx context.Context, len int) *CircleByteBuffer {
 	var e = new(CircleByteBuffer)
 	e.datas = make([]byte, len)
 	e.start = 0
 	e.end = 0
 	e.size = len
-	e.isClose = false
-	e.isEnd = false
+	e.ctx, e.cncl = context.WithCancel(ctx)
 	return e
 }
 
@@ -47,7 +48,7 @@ func (e *CircleByteBuffer) Clear() {
 	e.end = 0
 }
 func (e *CircleByteBuffer) PutByte(b byte) error {
-	if e.isClose {
+	if e.IsClose() {
 		return io.EOF
 	}
 	e.datas[e.end] = b
@@ -56,7 +57,7 @@ func (e *CircleByteBuffer) PutByte(b byte) error {
 		pos = 0
 	}
 	for pos == e.start {
-		if e.isClose {
+		if e.IsClose() {
 			return io.EOF
 		}
 		time.Sleep(time.Millisecond)
@@ -66,11 +67,11 @@ func (e *CircleByteBuffer) PutByte(b byte) error {
 }
 
 func (e *CircleByteBuffer) GetByte() (byte, error) {
-	if e.isClose {
+	if e.IsClose() {
 		return 0, io.EOF
 	}
 	for e.GetLen() <= 0 {
-		if e.isClose || e.isEnd {
+		if e.IsClose() {
 			return 0, io.EOF
 		}
 		time.Sleep(time.Millisecond)
@@ -109,12 +110,19 @@ func (e*CircleByteBuffer)gets(bts []byte)int{
 	}
 	return ret
 }*/
+func (e *CircleByteBuffer) IsClose() bool {
+	return CheckCtxDone(e.ctx)
+}
 func (e *CircleByteBuffer) Close() error {
-	e.isClose = true
+	if e.IsClose() || e.cncl == nil {
+		return errors.New("already closed")
+	}
+	e.cncl()
+	e.cncl = nil
 	return nil
 }
 func (e *CircleByteBuffer) Read(bts []byte) (int, error) {
-	if e.isClose {
+	if e.IsClose() {
 		return 0, io.EOF
 	}
 	if bts == nil {
@@ -129,17 +137,10 @@ func (e *CircleByteBuffer) Read(bts []byte) (int, error) {
 		bts[i] = b
 		ret++
 	}
-	if e.isClose {
-		return ret, io.EOF
-	}
 	return ret, nil
 }
 func (e *CircleByteBuffer) Write(bts []byte) (int, error) {
-	if e.isClose {
-		return 0, io.EOF
-	}
-	if bts == nil {
-		e.isEnd = true
+	if e.IsClose() {
 		return 0, io.EOF
 	}
 	var ret = 0
@@ -149,9 +150,6 @@ func (e *CircleByteBuffer) Write(bts []byte) (int, error) {
 			return ret, err
 		}
 		ret++
-	}
-	if e.isClose {
-		return ret, io.EOF
 	}
 	return ret, nil
 }
