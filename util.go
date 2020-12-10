@@ -2,6 +2,7 @@ package ruisUtil
 
 import (
 	"bytes"
+	"context"
 	"crypto/md5"
 	randc "crypto/rand"
 	"encoding/base64"
@@ -231,4 +232,13 @@ func readMachineId() []byte {
 	hw.Write([]byte(hostname))
 	copy(id, hw.Sum(nil))
 	return id
+}
+
+func CheckCtxDone(ctx context.Context) bool {
+	select {
+	case <-ctx.Done():
+		return true
+	default:
+		return false
+	}
 }
