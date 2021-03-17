@@ -16,7 +16,7 @@ func PathExists(path string) bool {
 	return false
 }
 
-func CheckContext(ctx context.Context) bool {
+func EndContext(ctx context.Context) bool {
 	select {
 	case <-ctx.Done():
 		return true
