@@ -2,7 +2,6 @@ package ruisIo
 
 import (
 	"context"
-	"errors"
 	"os"
 )
 
@@ -17,11 +16,11 @@ func PathExists(path string) bool {
 	return false
 }
 
-func CheckContext(ctx context.Context) error {
+func CheckContext(ctx context.Context) bool {
 	select {
 	case <-ctx.Done():
-		return errors.New("context end")
+		return true
 	default:
-		return nil
+		return false
 	}
 }
