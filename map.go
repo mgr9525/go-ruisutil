@@ -79,11 +79,18 @@ func (e *Map) ToString() string {
 	return string(bts)
 }
 func (e *Map) GetString(key string) string {
-	if e.Get(key) == nil {
+	v := e.Get(key)
+	if v == nil {
 		return ""
 	}
 
-	return fmt.Sprint(e.Get(key))
+	switch v.(type) {
+	case float32:
+		return fmt.Sprintf("%d", int64(v.(float32)))
+	case float64:
+		return fmt.Sprintf("%d", int64(v.(float64)))
+	}
+	return fmt.Sprintf("%v", v)
 }
 func (e *Map) GetInt(key string) (int64, error) {
 	if e.Get(key) == nil {

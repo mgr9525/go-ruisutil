@@ -14,11 +14,6 @@ func TestMap(t *testing.T) {
 	m.Set("zh", "ok")
 	mt := NewMaps(m.ToString())
 	println(mt.ToString())
-
-	bts, _ := Int2Bytes(123, 16)
-	println(fmt.Sprintf("Int2Bytes:%x", bts))
-	n, _ := Bytes2Int(bts, 32)
-	println(fmt.Sprintf("Bytes2Int:%d", n))
 }
 
 func add(z *int) int {
@@ -37,4 +32,7 @@ func deferRet(x, y int) (z int) {
 func Test1(t *testing.T) {
 	i := deferRet(1, 1)
 	println("main:", i)
+}
+func Test2(t *testing.T) {
+	println(fmt.Sprint(float64(554646954654.00)))
 }
