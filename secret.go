@@ -6,31 +6,37 @@ import (
 	"crypto/cipher"
 	"crypto/md5"
 	"crypto/sha1"
+	"crypto/sha256"
 	"encoding/hex"
 )
 
 func Md5String(data string) string {
-	md5 := md5.New()
-	md5.Write([]byte(data))
-	md5Data := md5.Sum([]byte(nil))
+	sct := md5.New()
+	sct.Write([]byte(data))
+	md5Data := sct.Sum(nil)
 	return hex.EncodeToString(md5Data)
 }
 
 func Md5(data []byte) string {
-	md5 := md5.New()
-	md5.Write(data)
-	md5Data := md5.Sum([]byte(nil))
+	sct := md5.New()
+	sct.Write(data)
+	md5Data := sct.Sum(nil)
 	return hex.EncodeToString(md5Data)
 }
 func Sha1String(data string) string {
-	sha1 := sha1.New()
-	sha1.Write([]byte(data))
-	return hex.EncodeToString(sha1.Sum([]byte(nil)))
+	sct := sha1.New()
+	sct.Write([]byte(data))
+	return hex.EncodeToString(sct.Sum(nil))
 }
 func Sha1(data []byte) string {
-	sha1 := sha1.New()
-	sha1.Write(data)
-	return hex.EncodeToString(sha1.Sum([]byte(nil)))
+	sct := sha1.New()
+	sct.Write(data)
+	return hex.EncodeToString(sct.Sum(nil))
+}
+func Sha256String(data string) string {
+	sct := sha256.New()
+	sct.Write([]byte(data))
+	return hex.EncodeToString(sct.Sum(nil))
 }
 
 func padding(src []byte, blocksize int) []byte {
