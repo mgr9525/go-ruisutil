@@ -3,10 +3,10 @@ package ruisIo
 import (
 	"context"
 	"errors"
-	"net"
+	"io"
 )
 
-func TcpRead(ctx context.Context, conn net.Conn, ln uint) ([]byte, error) {
+func TcpRead(ctx context.Context, conn io.Reader, ln uint) ([]byte, error) {
 	if conn == nil || ln <= 0 {
 		return nil, errors.New("handleRead ln<0")
 	}
@@ -32,7 +32,7 @@ func TcpRead(ctx context.Context, conn net.Conn, ln uint) ([]byte, error) {
 	}
 	return bts, nil
 }
-func TcpWrite(ctx context.Context, conn net.Conn, bts []byte) error {
+func TcpWrite(ctx context.Context, conn io.Writer, bts []byte) error {
 	ln := len(bts)
 	if conn == nil || ln <= 0 {
 		return errors.New("handleRead ln<0")

@@ -35,7 +35,8 @@ func Test1(t *testing.T) {
 	println("main:", i)
 }
 func Test2(t *testing.T) {
-	println(fmt.Sprint(float64(554646954654.00)))
+	txt := "sdfljsaldkfjslakdjgoiew234234234234234"
+	println(fmt.Sprintf("md5=%s,sha1=%s,sha256=%s", Md5String(txt), Sha1String(txt), Sha256String(txt)))
 }
 
 func Test3(t *testing.T) {
