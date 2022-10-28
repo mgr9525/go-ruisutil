@@ -9,6 +9,12 @@ import (
 	"fmt"
 )
 
+/*
+生产私钥公钥的方法
+openssl genrsa -out private.pem
+openssl rsa -in private.pem -pubout -out public.pem
+**/
+
 func RsaSign(conts []byte, privatekeybts []byte) ([]byte, error) {
 	// bts, err := ioutil.ReadFile("private.key")
 	block, _ := pem.Decode(privatekeybts)
