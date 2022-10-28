@@ -1,6 +1,7 @@
 package ruisUtil
 
 import (
+	"encoding/base64"
 	"fmt"
 	"testing"
 	"time"
@@ -35,4 +36,16 @@ func Test1(t *testing.T) {
 }
 func Test2(t *testing.T) {
 	println(fmt.Sprint(float64(554646954654.00)))
+}
+
+func Test3(t *testing.T) {
+	conts := "aslkdjflkasjdlgkjaslkdjflhlwkejrlkwejlkrjlksf"
+	signbts, err := RsaSign([]byte(conts), []byte("test-private-key"))
+	if err != nil {
+		println(fmt.Sprintf("RsaSign err:%v", err))
+		return
+	}
+	println(fmt.Sprintf("RsaSign ok:%s", base64.StdEncoding.EncodeToString(signbts)))
+	println(fmt.Sprintf("RsaVerify:%v", RsaVerify([]byte(conts+"abc"), signbts, []byte("test-public-key"))))
+
 }
