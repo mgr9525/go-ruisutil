@@ -7,56 +7,6 @@ import (
 	"io"
 )
 
-/*func TcpRead(ctx context.Context, conn io.Reader, ln uint) ([]byte, error) {
-	if conn == nil || ln <= 0 {
-		return nil, errors.New("handleRead ln<0")
-	}
-	rn := uint(0)
-	bts := make([]byte, ln)
-	for {
-		if EndContext(ctx) {
-			return nil, errors.New("context dead")
-		}
-		n, err := conn.Read(bts[rn:])
-		if n > 0 {
-			rn += uint(n)
-		}
-		if rn >= ln {
-			break
-		}
-		if err != nil {
-			return nil, err
-		}
-		if n <= 0 {
-			return nil, errors.New("conn abort")
-		}
-	}
-	return bts, nil
-}*/
-
-/*func TcpWrite(ctx context.Context, conn io.Writer, bts []byte) error {
-	ln := len(bts)
-	if conn == nil || ln <= 0 {
-		return errors.New("handleRead ln<0")
-	}
-
-	wn := 0
-	for wn < ln {
-		if EndContext(ctx) {
-			return errors.New("context dead")
-		}
-		n, err := conn.Write(bts[wn:])
-		wn += n
-		if err != nil {
-			return err
-		}
-		if n <= 0 && wn < ln {
-			return errors.New("conn abort")
-		}
-	}
-	return nil
-}*/
-
 func IoReadAll(ctx context.Context, rdr io.Reader, ln uint) ([]byte, error) {
 	rn := uint(0)
 	bts := make([]byte, ln)
@@ -75,7 +25,8 @@ func IoReadAll(ctx context.Context, rdr io.Reader, ln uint) ([]byte, error) {
 			return nil, err
 		}
 		if n <= 0 {
-			return nil, fmt.Errorf("read ln=0 broker")
+			//return nil, fmt.Errorf("read ln=0 broker")
+			break
 		}
 	}
 	if rn != ln {
@@ -101,7 +52,8 @@ func IoWriteAll(ctx context.Context, wtr io.Writer, bts []byte) error {
 			return err
 		}
 		if n <= 0 {
-			return fmt.Errorf("write ln=0 broker")
+			//return fmt.Errorf("write ln=0 broker")
+			break
 		}
 	}
 	if wn != ln {
