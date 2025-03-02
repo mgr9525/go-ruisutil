@@ -2,9 +2,8 @@ package main
 
 import (
 	"encoding/hex"
-	"fmt"
-	"github.com/mgr9525/go-ruisutil/ruisCgo"
-	"unsafe"
+
+	ruisUtil "github.com/mgr9525/go-ruisutil"
 )
 
 type flvHeader struct {
@@ -15,12 +14,16 @@ type flvHeader struct {
 }
 
 func main() {
-	hdr := &flvHeader{}
 	hds, err := hex.DecodeString("464c560105000000090000000012000111000000")
 	if err != nil {
 		println(err.Error())
 		return
 	}
+
+	var itf interface{}
+	itf = 123
+	intf := ruisUtil.GetInt(itf)
+	/* hdr := &flvHeader{}
 	var i1 int32 = 1
 	println("sizeof1:", unsafe.Sizeof(i1))
 	println("sizeof:", unsafe.Sizeof(*hdr), "alif:", unsafe.Alignof(*hdr))
@@ -31,6 +34,6 @@ func main() {
 	if err != nil {
 		println(err.Error())
 		return
-	}
-	println(hex.EncodeToString(bts))
+	} */
+	println(hex.EncodeToString(hds), intf)
 }

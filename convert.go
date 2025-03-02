@@ -73,15 +73,15 @@ func Map2Struct(mp map[string]interface{}, dist interface{}) (rterr error) {
 		}
 		switch tfdc.Kind() {
 		case reflect.String:
-			vfdc.SetString(getString(v))
+			vfdc.SetString(GetString(v))
 		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-			vfdc.SetInt(getInt(v))
+			vfdc.SetInt(GetInt(v))
 		case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
-			vfdc.SetUint(getUint(v))
+			vfdc.SetUint(GetUint(v))
 		case reflect.Float32, reflect.Float64:
-			vfdc.SetFloat(getFloat(v))
+			vfdc.SetFloat(GetFloat(v))
 		case reflect.Bool:
-			vfdc.SetBool(getBool(v))
+			vfdc.SetBool(GetBool(v))
 		case reflect.Struct:
 			mpd, ok := v.(map[string]interface{})
 			if ok {
@@ -259,15 +259,15 @@ func Struct2Struct(src interface{}, dist interface{}) (rterr error) {
 		}
 		switch vfdc.Kind() {
 		case reflect.String:
-			vfdc.SetString(getString(v))
+			vfdc.SetString(GetString(v))
 		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-			vfdc.SetInt(getInt(v))
+			vfdc.SetInt(GetInt(v))
 		case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
-			vfdc.SetUint(getUint(v))
+			vfdc.SetUint(GetUint(v))
 		case reflect.Float32, reflect.Float64:
-			vfdc.SetFloat(getFloat(v))
+			vfdc.SetFloat(GetFloat(v))
 		case reflect.Bool:
-			vfdc.SetBool(getBool(v))
+			vfdc.SetBool(GetBool(v))
 		case reflect.Struct:
 			if err := Struct2Struct(v, vfdc.Addr().Interface()); err != nil {
 				println(err.Error())
@@ -293,7 +293,7 @@ func setValue(vf reflect.Value, v interface{}) {
 	}()
 	vf.Set(reflect.ValueOf(v))
 }
-func getBool(v interface{}) bool {
+func GetBool(v interface{}) bool {
 	vf := reflect.ValueOf(v)
 	switch vf.Kind() {
 	case reflect.Bool:
@@ -303,7 +303,7 @@ func getBool(v interface{}) bool {
 	}
 	return false
 }
-func getString(v interface{}) string {
+func GetString(v interface{}) string {
 	vf := reflect.ValueOf(v)
 	switch vf.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
@@ -314,7 +314,7 @@ func getString(v interface{}) string {
 	}
 	return fmt.Sprintf("%v", v)
 }
-func getInt(v interface{}) int64 {
+func GetInt(v interface{}) int64 {
 	vf := reflect.ValueOf(v)
 	switch vf.Kind() {
 	case reflect.Int:
@@ -347,7 +347,7 @@ func getInt(v interface{}) int64 {
 	}
 	return 0
 }
-func getUint(v interface{}) uint64 {
+func GetUint(v interface{}) uint64 {
 	vf := reflect.ValueOf(v)
 	switch vf.Kind() {
 	case reflect.Int:
@@ -380,7 +380,7 @@ func getUint(v interface{}) uint64 {
 	}
 	return 0
 }
-func getFloat(v interface{}) float64 {
+func GetFloat(v interface{}) float64 {
 	vf := reflect.ValueOf(v)
 	switch vf.Kind() {
 	case reflect.Int:
@@ -459,19 +459,19 @@ func Obj2Slice(obj interface{}, dtf reflect.Type) (ret reflect.Value, rterr erro
 		switch dtf2.Kind() {
 		case reflect.String:
 			nv = nv.Elem()
-			nv.SetString(getString(val))
+			nv.SetString(GetString(val))
 		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 			nv = nv.Elem()
-			nv.SetInt(getInt(val))
+			nv.SetInt(GetInt(val))
 		case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
 			nv = nv.Elem()
-			nv.SetUint(getUint(val))
+			nv.SetUint(GetUint(val))
 		case reflect.Float32, reflect.Float64:
 			nv = nv.Elem()
-			nv.SetFloat(getFloat(val))
+			nv.SetFloat(GetFloat(val))
 		case reflect.Bool:
 			nv = nv.Elem()
-			nv.SetBool(getBool(val))
+			nv.SetBool(GetBool(val))
 		case reflect.Struct:
 			mpd, ok := val.(map[string]interface{})
 			if ok {
