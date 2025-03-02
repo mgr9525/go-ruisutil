@@ -509,3 +509,23 @@ func Obj2Slice(obj interface{}, dist interface{}) error {
 	}
 	return nil
 }*/
+
+func FormatInts(i interface{}) string {
+	return fmt.Sprintf("%d", i)
+}
+func FormatInt(i int) string {
+	return FormatInt64(int64(i))
+}
+func FormatInt64(i int64) string {
+	return strconv.FormatInt(i, 10)
+}
+func ParseInt(s string) int {
+	return int(ParseInt64(s))
+}
+func ParseInt64(s string) int64 {
+	i, _ := ParseInt64err(s)
+	return i
+}
+func ParseInt64err(s string) (int64, error) {
+	return strconv.ParseInt(s, 10, 64)
+}

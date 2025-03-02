@@ -56,6 +56,10 @@ func (e *Map) GetOk(key string) (interface{}, bool) {
 	v, ok := (*e)[key]
 	return v, ok
 }
+func (e *Map) Exist(key string) bool {
+	_, ok := (*e)[key]
+	return ok
+}
 func (e *Map) Set(key string, val interface{}) {
 	(*e)[key] = val
 }
