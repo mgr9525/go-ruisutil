@@ -52,6 +52,10 @@ func NewMapo(body interface{}) *Map {
 func (e *Map) Get(key string) interface{} {
 	return (*e)[key]
 }
+func (e *Map) GetOk(key string) (interface{}, bool) {
+	v, ok := (*e)[key]
+	return v, ok
+}
 func (e *Map) Set(key string, val interface{}) {
 	(*e)[key] = val
 }
@@ -77,6 +81,13 @@ func (e *Map) ToString() string {
 		return ""
 	}
 	return string(bts)
+}
+func (e *Map) GetMap(key string) (*Map, bool) {
+	v, ok := e.GetOk(key)
+	if !ok {
+		return nil, false
+	}
+	return NewMapo(v), true
 }
 func (e *Map) GetString(key string) string {
 	v := e.Get(key)
